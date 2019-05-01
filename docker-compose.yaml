@@ -4,20 +4,54 @@ services:
   db:
     image: postgres:11.2-alpine
     environment:
-      - POSTGRES_USER=taskleaf
       - POSTGRES_PASSWORD=taskleaf
+      - POSTGRES_USER=taskleaf
     volumes:
       - pgdata:/var/lib/postgresql/data
     restart: always
+    networks:
+      pitari_dev:
+        aliases:
+          - db.local
   app:
     build:
       context: .
       dockerfile: ./Dockerfile
     ports:
       - 3000:3000
+    environment:
+      # - RAILS_SERVE_STATIC_FILES=1
+      # - RAILS_ENV=production
+      - REDIS_URL=redis://redis.local:6379
+      - TASKLEAF_DATABASE_PASSWORD=taskleaf
     volumes:
       - ./:/usr/src/app
+    # command: rails server -b 0.0.0.0 --environment=production
     command: rails server -b 0.0.0.0
+    restart: always
+    networks:
+      pitari_dev:
+        aliases:
+          - app.local
+  chrome:
+    image: selenium/standalone-chrome-debug:3.141.0-actinium
+    ports:
+    - 5900:5900
+    restart: always
+    networks:
+      pitari_dev:
+        aliases:
+          - chrome.local
+  redis:
+    image: redis:5.0.4-alpine
+    restart: always
+    networks:
+      pitari_dev:
+        aliases:
+          - redis.local
 
 volumes:
   pgdata:
+
+networks:
+  pitari_dev:

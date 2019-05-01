@@ -15,6 +15,7 @@ class Admin::UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+    logger.debug @user
     if @user.save
       flash[:success] = "ユーザー「#{@user.name}」を登録しました。"
       redirect_to admin_users_path

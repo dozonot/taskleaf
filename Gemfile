@@ -67,3 +67,15 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'slim-rails'
 gem 'html2slim'
 gem 'bootstrap'
+
+# Add search feature
+gem 'ransack'
+
+# Add CSV Export feature
+gem 'csv'
+
+# Add paginate feature
+gem 'kaminari'
+
+# Add Async job
+gem 'sidekiq'
